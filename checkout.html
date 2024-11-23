@@ -23,6 +23,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="orderSuccess.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -249,7 +250,6 @@
             margin-top: 5px;
             display: none;
         }
-
     </style>
 </head>
 
@@ -343,6 +343,44 @@
             <div class="final-message">Congratulations! You got a 10% discount!</div>
         </div>
     </div>
+
+    <!-- Success Animation Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-modal">
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+                <div class="step" id="step1">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="step-label">Confirmed</span>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-circle">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span class="step-label">Processing</span>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-circle">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <span class="step-label">Ready</span>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="success-title">Order Placed Successfully!</h2>
+                <p class="success-text">Thank you for shopping with us. Your order has been confirmed and is being processed.</p>
+                <button class="continue-btn" onclick="window.location.href='index.html'">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
@@ -534,31 +572,114 @@
         
             // Event Listeners
             bargainBtn.addEventListener('click', startBargainAnimation);
-        
+        });
+
+
+        // Main checkout handler
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const deliveryError = document.getElementById('delivery-error');
+            const paymentError = document.getElementById('payment-error');
+
+            function validateForm() {
+                const deliveryMethod = document.querySelector('input[name="delivery"]:checked');
+                const paymentMethod = document.querySelector('input[name="payment"]:checked');
+                let isValid = true;
+
+                if (!deliveryMethod) {
+                    deliveryError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    deliveryError.style.display = 'none';
+                }
+
+                if (!paymentMethod) {
+                    paymentError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    paymentError.style.display = 'none';
+                }
+
+                return isValid;
+            }
+
+            // Success Animation Functions
+            function showSuccessAnimation() {
+                const overlay = document.getElementById('successOverlay');
+                const step1 = document.getElementById('step1');
+                const step2 = document.getElementById('step2');
+                const step3 = document.getElementById('step3');
+                const successMessage = document.getElementById('successMessage');
+
+                // Show overlay
+                overlay.style.display = 'flex';
+                
+                // Trigger fade in
+                setTimeout(() => {
+                    overlay.classList.add('active');
+                }, 100);
+
+                // Animate steps
+                setTimeout(() => {
+                    step1.classList.add('active');
+                }, 500);
+
+                setTimeout(() => {
+                    step2.classList.add('active');
+                }, 1500);
+
+                setTimeout(() => {
+                    step3.classList.add('active');
+                }, 2500);
+
+                // Show success message
+                setTimeout(() => {
+                    successMessage.classList.add('active');
+                }, 3000);
+
+                // Redirect after animation completes
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 10000);
+            }
+
+            // Checkout button click handler
             checkoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (validateForm()) {
-                    const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
-                    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-                    
                     // Show loading state
                     checkoutBtn.disabled = true;
                     checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        
+
                     // Simulate API call
                     setTimeout(() => {
-                        alert('Order placed successfully!');
-                        // Clear cart after successful order
+                        // Clear cart
                         localStorage.removeItem('cart');
-                        // Reset form
+                        
+                        // Reset button state
                         checkoutBtn.disabled = false;
                         checkoutBtn.innerHTML = 'Complete Order <i class="fas fa-arrow-right"></i>';
-                        // You would typically redirect to a confirmation page here
-                        window.location.href='index.html';
+                        
+                        // Show success animation
+                        showSuccessAnimation();
                     }, 2000);
                 }
             });
+
+            function initializeFeatures() {
+                console.log('Checkout page initialized');
+            }
+
+            initializeFeatures();
         });
+
+        // Helper function to format currency
+        function formatCurrency(amount) {
+            return amount.toLocaleString('en-KE', {
+                style: 'currency',
+                currency: 'KES'
+            });
+        }
     </script>
 </body>
 
