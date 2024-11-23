@@ -697,7 +697,7 @@
                 toastMessage.style.display = 'block';
                 setTimeout(() => {
                     toastMessage.style.display = 'none';
-                }, 3000); // Hide after 3 seconds
+                }, 3000);
             }
 
             // Function to check cart and handle navigation
@@ -713,18 +713,7 @@
 
             // Add click event listener to cart icon
             cartIcon.addEventListener('click', handleCartNavigation);
-
-            // Optional: Update cart count from localStorage if you're storing cart data
-            function updateCartCount() {
-                // Example: Get cart data from localStorage
-                const cartData = JSON.parse(localStorage.getItem('cartItems')) || [];
-                cartCount.textContent = cartData.length;
-            }
-
-            // Call this function when page loads and after cart updates
-            updateCartCount();
-
-            // Example: Listen for cart updates if you're using custom events
+            // Listen for cart updates if you're using custom events
             document.addEventListener('cartUpdated', function() {
                 updateCartCount();
             });
