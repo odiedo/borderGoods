@@ -125,15 +125,15 @@
             const row = document.createElement('tr');
             row.id = `cart-item-${index}`;
             row.innerHTML = `
-                <td><img src="${item.image}" alt="${item.name}" style="width: 100px;"/></td>
-                <td>
-                    <span class="font-weight-bold">${item.name}</span><br>
+                <td style="width: 100px;"><img src="${item.image}" alt="${item.name}" style="width: 100%;"/></td>
+                <td style="width: 80%;">
+                    <span class="font-weight-bold cart-header" >${item.name}</span><br>
                     <span id="total-${index}">Kshs. ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span><br>
                     <button class="btn border btn-sm" onclick="decrementQuantity(${index})">-</button>
                         <span id="quantity-${index}">${item.quantity}</span>
                     <button class="btn border btn-sm" onclick="incrementQuantity(${index})">+</button>
                 </td>
-                <td><button class="btn btn-danger btn-sm" onclick="removeItem(${index})"><i class="fa fa-times"></i></button></td>
+                <td><button class="btn btn-danger btn-sm" onclick="removeItem(${index})" style="border-radius: 10px;"><i class="fa fa-trash"></i></button></td>
             `;
             cartBody.appendChild(row);
         });

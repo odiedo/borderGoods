@@ -24,6 +24,9 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f5f5f5;
+        }
         .fixed-topbar {
             position: fixed;
             top: 0;
@@ -47,8 +50,45 @@
             background-color: #007bff;
             color: white;
         }
+        tr {
+            background: white;
+            padding: 0rem;
+            border-radius: 10px;
+            margin-bottom: 0.3rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
 
+        tr:hover {
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
 
+        .proceed-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .proceed-btn:hover {
+            background-color: #1d4ed8;
+        }
+        #cart-summary {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
@@ -137,7 +177,7 @@
             <div class="col-md-8">
                 <table id="cart-items" class="table table-responsive">
                     <tbody id="cart-body">
-                        <!-- Cart items will be dynamically generated here -->
+                        <!-- Cart items displayed -->
                     </tbody>
                 </table>
             </div>
@@ -145,7 +185,7 @@
                 <div id="cart-summary" class="text-right">
                     <h4>Cart Summary</h4>
                     <p>Subtotal: <span id="cart-subtotal" class="font-weight-bold">Kshs. 0.00</span></p>
-                    <button id="checkout-btn" class="btn btn-primary text-light font-weight-bold" onclick="window.location.href='checkout.html';">Proceed to Checkout</button>
+                    <button id="checkout-btn" class="btn btn-primary proceed-btn text-light font-weight-bold" onclick="window.location.href='checkout.html';">Proceed to Checkout</button>
                 </div>
             </div>
         </div>
@@ -163,95 +203,6 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
-    <!-- <script>
-        // Load cart from localStorage
-        function loadCart() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartBody = document.getElementById('cart-body');
-            const cartSubtotal = document.getElementById('cart-subtotal');
-            cartBody.innerHTML = '';
-            let subtotal = 0;
-    
-            cart.forEach((item, index) => {
-                const total = item.price * item.quantity;
-                subtotal += total;
-    
-                const row = document.createElement('tr');
-                // Assign unique id to the row
-                row.id = `cart-item-${index}`; 
-                row.innerHTML = `
-                    <td><img src="${item.image}" alt="${item.name}" style="width: 100px;"/></td>
-                    <td>
-                        <span class="font-weight-bold">${item.name}</span><br>
-                        <span id="total-${index}">Kshs. ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span><br>
-                        <button class="btn border btn-sm" onclick="decrementQuantity(${index})">-</button>
-                            <span id="quantity-${index}">${item.quantity}</span>
-                        <button class="btn border btn-sm" onclick="incrementQuantity(${index})">+</button>
-                    <td>
-                    <td><button class="btn btn-danger btn-sm" onclick="removeItem(${index})"><i class="fa fa-times"></i></button></td>
-                `;
-                cartBody.appendChild(row);
-            });
-    
-            cartSubtotal.textContent = `Kshs. ${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-        }
-    
-        // Update subtotal 
-        function updateSubtotal() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let subtotal = 0;
-    
-            cart.forEach((item) => {
-                subtotal += item.price * item.quantity;
-            });
-    
-            document.getElementById('cart-subtotal').textContent = `Kshs. ${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-        }
-    
-        // Increment 
-        function incrementQuantity(index) {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart[index].quantity += 1;
-            localStorage.setItem('cart', JSON.stringify(cart));
-    
-            updateItemRow(index); 
-        }
-    
-        // Decrement 
-        function decrementQuantity(index) {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (cart[index].quantity > 1) {
-                cart[index].quantity -= 1;
-                localStorage.setItem('cart', JSON.stringify(cart));
-    
-                updateItemRow(index);
-            }
-        }
-    
-        // Remove cart product
-        function removeItem(index) {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.splice(index, 1); // Remove item at the given index
-            localStorage.setItem('cart', JSON.stringify(cart));
-            loadCart();
-        }
-    
-        // Update item row
-        function updateItemRow(index) {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const item = cart[index];
-            const total = item.price * item.quantity;
-    
-            document.getElementById(`quantity-${index}`).textContent = item.quantity;
-            document.getElementById(`total-${index}`).textContent = `Kshs. ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-    
-            updateSubtotal();
-        }
-    
-        window.onload = loadCart;
-    </script> -->
-    
 
 </body>
 
