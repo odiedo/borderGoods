@@ -47,7 +47,61 @@
             background-color: #007bff;
             color: white;
         }
+        .bargain-container {
+            position: relative;
+            margin-top: 20px;
+            text-align: center;
+        }
 
+        .percentage-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #007bff;
+            transition: color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .animation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .animation-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: popIn 0.5s ease-out;
+        }
+
+        .final-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #28a745;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
 
     </style>
 </head>
@@ -135,16 +189,6 @@
     <div id="cart-items-container" class="container" style="margin-top: 150px;">
         <div class="row">
             <div class="col-md-4">
-                <h3 class="font-weight-bold">Checkout</h3>
-                <label for="pickupStation" class="form-control border-0">Please select how you will get your product: </label>
-                <select name="pickup_station" id="pickupStation" class="form-control">
-                    <option selected disabled>---select here---</option>
-                    <option value="shop">Shop</option>
-                    <option value="doorstep">Doorstep delivery</option>
-                </select>
-                <iframe min-width="100%" width="100%" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=34.76887464523316%2C-0.07462976252758229%2C34.78531122207642%2C-0.06158350712432609&amp;layer=mapnik&amp;marker=-0.06810663526735157%2C34.777092933654785" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=-0.0681&amp;mlon=34.7771#map=16/-0.0681/34.7771">View Larger Map</a></small>
-            </div>
-            <div class="col-md-4">
                 <h5 class="">Maximum Waiting Time: 30 Minutes</h5>
                 <label for="payMethod" class="form-control border-0">Please select payment method: </label>
                 <select name="pay_method" id="payMethod" class="form-control">
@@ -152,12 +196,32 @@
                     <option value="cash">Cash</option>
                     <option value="mpesa">Mpesa</option>
                 </select>
-                <label for="payMethod" class="form-control border-0">Burgain mode: </label>
-                <select name="burgainMode" id="burgain_mode" class="form-control">
+                <div class="form-group">
+                    <label for="burgainMode" class="form-control border-0">Bargain mode: </label>
+                    <!-- <select name="burgainMode" id="burgain_mode" class="form-control">
+                        <option selected disabled>---select here---</option>
+                        <option value="50">50/-</option>
+                        <option value="100">100/-</option>
+                    </select> -->
+                    <button  class="btn form-control" id="burgain_mode"> Burgain</button>
+                </div>
+                <!-- Add the animation overlay -->
+                <div class="animation-overlay">
+                    <div class="animation-content">
+                        <div class="percentage-display">0%</div>
+                        <div class="final-message">Congratulations! You got a 10% discount!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                
+                <label for="pickupStation" class="form-control border-0">Please select how you will get your product: </label>
+                <select name="pickup_station" id="pickupStation" class="form-control">
                     <option selected disabled>---select here---</option>
-                    <option value="50">50/-</option>
-                    <option value="100">100/-</option>
+                    <option value="shop">Shop</option>
+                    <option value="doorstep">Doorstep delivery</option>
                 </select>
+                <iframe min-width="100%" width="100%" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=34.76887464523316%2C-0.07462976252758229%2C34.78531122207642%2C-0.06158350712432609&amp;layer=mapnik&amp;marker=-0.06810663526735157%2C34.777092933654785" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=-0.0681&amp;mlon=34.7771#map=16/-0.0681/34.7771">View Larger Map</a></small>
             </div>
             <div class="col-md-4">
                 <div id="cart-summary" class="text-right">
@@ -248,7 +312,92 @@
         });
     </script>
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bargainButton = document.getElementById('burgain_mode');
+            const overlay = document.querySelector('.animation-overlay');
+            const percentageDisplay = document.querySelector('.percentage-display');
+            const finalMessage = document.querySelector('.final-message');
+            
+            let animationInterval;
+            let currentValue = 0;
+            let direction = 1;
+            let cycles = 0;
+            const maxCycles = 2;
+
+            function updateDisplay(value) {
+                percentageDisplay.textContent = `${Math.round(value)}%`;
+                percentageDisplay.style.color = `hsl(${value * 2}, 70%, 50%)`;
+            }
+
+            function resetAnimation() {
+                clearInterval(animationInterval);
+                overlay.style.display = 'none';
+                finalMessage.style.opacity = '0';
+                currentValue = 0;
+                cycles = 0;
+                direction = 1;
+                bargainButton.disabled = false;
+            }
+
+            function startBargainAnimation() {
+                overlay.style.display = 'flex';
+                percentageDisplay.style.animation = 'none';
+                finalMessage.style.opacity = '0';
+                bargainButton.disabled = true;
+                
+                animationInterval = setInterval(() => {
+                    currentValue += direction * (Math.random() * 5 + 2);
+                    
+                    if (currentValue >= 100) {
+                        currentValue = 100;
+                        direction = -1;
+                        cycles++;
+                    } else if (currentValue <= 0) {
+                        currentValue = 0;
+                        direction = 1;
+                        cycles++;
+                    }
+                    
+                    updateDisplay(currentValue);
+                    
+                    if (cycles >= maxCycles) {
+                        clearInterval(animationInterval);
+                        
+                        // Settle to 10% with smooth animation
+                        const finalAnimation = setInterval(() => {
+                            if (Math.abs(currentValue - 10) < 0.5) {
+                                currentValue = 10;
+                                clearInterval(finalAnimation);
+                                percentageDisplay.style.animation = 'pulse 1s ease infinite';
+                                finalMessage.style.opacity = '1';
+                                
+                                // Auto close after 3 seconds
+                                setTimeout(() => {
+                                    resetAnimation();
+                                }, 3000);
+                            } else {
+                                currentValue += (10 - currentValue) * 0.1;
+                                updateDisplay(currentValue);
+                            }
+                        }, 50);
+                    }
+                }, 50);
+            }
+
+            bargainButton.addEventListener('click', () => {
+                resetAnimation();
+                startBargainAnimation();
+            });
+
+            // Close overlay when clicking outside the animation content
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    resetAnimation();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
