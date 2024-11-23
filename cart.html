@@ -23,6 +23,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
     <style>
         body {
             background-color: #f5f5f5;
@@ -124,25 +125,50 @@
                             <i class="fab fa-youtube"></i>
                         </a>
                     </div>
-                    <div class="p-0 text-center m-0">
+                    <div class="p-0 text-center m-0 d-lg-block d-none">
                         <button type="button" class="navbar-toggler p-0 mb-0" data-toggle="collapse" data-target="#navbarCollapse">
                             <i class="fa fa-bars"></i>
                         </button><br>
                         <span style="font-size: 10px;">menu</span>
                     </div>
                 </div>
-                <!-- Collapsible menu for additional links -->
+                <!-- Collapsible menu for desktop -->
                 <div class="collapse" id="navbarCollapse">
                     <div class="navbar-nav ml-auto py-0">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="shops.html" class="nav-item nav-link">Shop</a>
+                        <a href="shop.html" class="nav-item nav-link">Shop</a>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
-                        <a href="#" class="nav-item nav-link">Login</a>
-                        <a href="#" class="nav-item nav-link">Register</a>
+                        <a href="" class="nav-item nav-link">Login</a>
+                        <a href="" class="nav-item nav-link">Register</a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Mobile Bottom Navigation -->
+        <nav class="mobile-bottom-nav">
+            <div class="mobile-nav-items">
+                <a href="index.html" class="mobile-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="shop.html" class="mobile-nav-item">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
+                </a>
+                <a href="categories.html" class="mobile-nav-item">
+                    <i class="fas fa-th-large"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="cart.html" class="mobile-nav-item active">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart</span>
+                </a>
+                <a href="account.html" class="mobile-nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Account</span>
+                </a>
+            </div>
+        </nav>
         <div class="row align-items-center px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="index.html" class="text-decoration-none">
