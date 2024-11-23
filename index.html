@@ -24,8 +24,16 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
+    <!-- .fixed-topbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    } -->
     <style>
+        /* General styles */
         .fixed-topbar {
             position: fixed;
             top: 0;
@@ -33,6 +41,77 @@
             z-index: 1000;
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile bottom navigation */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #6c757d;
+            font-size: 0.75rem;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav-item.active {
+            color: #007bff;
+        }
+
+        .mobile-nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Hide mobile elements on desktop */
+        @media (min-width: 992px) {
+            .mobile-bottom-nav {
+                display: none;
+            }
+        }
+
+        /* Show mobile elements on mobile */
+        @media (max-width: 991px) {
+            .mobile-bottom-nav {
+                display: block;
+            }
+            
+            .fixed-topbar .navbar-toggler,
+            .fixed-topbar #navbarCollapse {
+                display: none !important;
+            }
+
+            /* Add padding to main content to account for bottom nav */
+            body {
+                padding-bottom: 4rem;
+            }
+        }
+
+        /* Animation for active state */
+        .mobile-nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-item:active {
+            transform: scale(0.95);
         }
 
         .navbar-toggler-icon {
@@ -49,7 +128,46 @@
             background-color: #007bff;
             color: white;
         }
+        .toast-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #ff6b6b;
+            color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1100;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
 
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
 
     </style>
 </head>
@@ -86,14 +204,14 @@
                             <i class="fab fa-youtube"></i>
                         </a>
                     </div>
-                    <div class="p-0 text-center m-0">
+                    <div class="p-0 text-center m-0 d-lg-block d-none">
                         <button type="button" class="navbar-toggler p-0 mb-0" data-toggle="collapse" data-target="#navbarCollapse">
                             <i class="fa fa-bars"></i>
                         </button><br>
                         <span style="font-size: 10px;">menu</span>
                     </div>
                 </div>
-                <!-- Collapsible menu for additional links -->
+                <!-- Collapsible menu for desktop -->
                 <div class="collapse" id="navbarCollapse">
                     <div class="navbar-nav ml-auto py-0">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
@@ -105,6 +223,31 @@
                 </div>
             </div>
         </div>
+        <!-- Mobile Bottom Navigation -->
+        <nav class="mobile-bottom-nav">
+            <div class="mobile-nav-items">
+                <a href="index.html" class="mobile-nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="shop.html" class="mobile-nav-item">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
+                </a>
+                <a href="categories.html" class="mobile-nav-item">
+                    <i class="fas fa-th-large"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="cart.html" class="mobile-nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart</span>
+                </a>
+                <a href="account.html" class="mobile-nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Account</span>
+                </a>
+            </div>
+        </nav>
         <div class="row align-items-center px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
@@ -123,11 +266,18 @@
                     </div>
                 </form>
             </div>
+             <!-- Toast Message Container -->
+            <div id="toast-message" class="toast-message">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                Your cart is empty!
+            </div>
+
+             <!-- Cart Icon Container -->
             <div class="col-lg-3 col-3 text-right d-flex justify-content-between">
-                <a href="cart.html" class="btn border d-flex justify-content-between">
+                <div id="cart-icon" class="btn border d-flex justify-content-between cart-icon">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span id="cart-count" class="badge">0</span>
-                </a>
+                </div>
             </div>
         </div>
     </div>
@@ -522,7 +672,64 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            
+            mobileNavItems.forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartIcon = document.getElementById('cart-icon');
+            const cartCount = document.getElementById('cart-count');
+            const toastMessage = document.getElementById('toast-message');
+
+            // Function to show toast message
+            function showToast() {
+                toastMessage.style.display = 'block';
+                setTimeout(() => {
+                    toastMessage.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            }
+
+            // Function to check cart and handle navigation
+            function handleCartNavigation() {
+                const currentCount = parseInt(cartCount.textContent);
+                
+                if (currentCount === 0) {
+                    showToast();
+                } else {
+                    window.location.href = 'cart.html';
+                }
+            }
+
+            // Add click event listener to cart icon
+            cartIcon.addEventListener('click', handleCartNavigation);
+
+            // Optional: Update cart count from localStorage if you're storing cart data
+            function updateCartCount() {
+                // Example: Get cart data from localStorage
+                const cartData = JSON.parse(localStorage.getItem('cartItems')) || [];
+                cartCount.textContent = cartData.length;
+            }
+
+            // Call this function when page loads and after cart updates
+            updateCartCount();
+
+            // Example: Listen for cart updates if you're using custom events
+            document.addEventListener('cartUpdated', function() {
+                updateCartCount();
+            });
+        });
+    </script>
 
 </body>
 
