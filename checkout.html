@@ -62,14 +62,15 @@
 
         .page-title {
             font-size: 24px;
-            margin-bottom: 20px;
+            margin: 10px;
             color: #333;
+            font-weight: 900;
         }
 
         .checkout-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 10px;
         }
 
         @media (min-width: 768px) {
@@ -82,14 +83,14 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .card-title {
@@ -123,7 +124,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #e5e7eb;
             border-radius: 6px;
             transition: all 0.2s;
@@ -138,7 +139,7 @@
         }
 
         .map-container {
-            margin-top: 15px;
+            margin-top: 10px;
             display: none;
         }
 
@@ -156,14 +157,14 @@
         .summary-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #e5e7eb;
         }
 
         .summary-total {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            padding: 10px 0;
             font-weight: bold;
             font-size: 18px;
             color: #333;
@@ -254,86 +255,11 @@
 </head>
 
 <body>
-    <!-- Topbar Start -->
-    <div class="container-fluid fixed-topbar">
-        <div class="row bg-secondary py-2 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="">FAQs</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Help</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Support</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-flex justify-content-between">
-                    <div class="d-inline-flex align-items-center">
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a class="text-dark pl-2" href="">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                    <div class="p-0 text-center m-0">
-                        <button type="button" class="navbar-toggler p-0 mb-0" data-toggle="collapse" data-target="#navbarCollapse">
-                            <i class="fa fa-bars"></i>
-                        </button><br>
-                        <span style="font-size: 10px;">menu</span>
-                    </div>
-                </div>
-                <!-- Collapsible menu for additional links -->
-                <div class="collapse" id="navbarCollapse">
-                    <div class="navbar-nav ml-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="shops.html" class="nav-item nav-link">Shop</a>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
-                        <a href="#" class="nav-item nav-link">Login</a>
-                        <a href="#" class="nav-item nav-link">Register</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a href="index.html" class="text-decoration-none">
-                    <img src="img/main-logo.png" alt="logo" style="height: 60px; width: 80%">
-                </a>
-            </div>
-            <div class="col-lg-6 col-9">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-3 col-3 text-right d-flex justify-content-between">
-                <a href="cart.html" class="btn border d-flex justify-content-between">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span id="cart-count" class="badge">0</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-    <div class="container-fluid" style="margin-top: 100px;">
-        <h1 class="page-title">Checkout</h1>
+    <div class="container-fluid">
+        <h1 class="page-title d-flex justify-content-between">
+            <button class="btn active" onclick="window.history.back();"> <i class="fas fa-arrow-left"></i></button>
+            Checkout 
+        </h1>
         
         <div class="checkout-grid">
             <!-- Left Column - Order Details -->
@@ -446,6 +372,30 @@
             const deliveryError = document.getElementById('delivery-error');
             const paymentError = document.getElementById('payment-error');
         
+            // Load cart data and update prices
+            function loadCartData() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                let subtotal = 0;
+                
+                // Calculate subtotal from cart items
+                cart.forEach(item => {
+                    subtotal += item.price * item.quantity;
+                });
+        
+                const deliveryFee = 50; // Fixed delivery fee of Kshs. 50
+                const total = subtotal + deliveryFee;
+        
+                // Update display
+                document.getElementById('subtotal').textContent = `Kshs. ${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                document.getElementById('delivery-fee').textContent = `Kshs. ${deliveryFee.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                document.getElementById('total').textContent = `Kshs. ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        
+                return { subtotal, deliveryFee, total };
+            }
+        
+            // Load initial cart data
+            let prices = loadCartData();
+        
             // Delivery method handling
             deliveryRadios.forEach(radio => {
                 radio.addEventListener('change', (e) => {
@@ -478,7 +428,23 @@
                 });
             });
         
-            // Bargaining animation
+            // Modified applyDiscount function to work with stored prices
+            function applyDiscount(discountPercent) {
+                const discountedSubtotal = prices.subtotal * (1 - discountPercent);
+                const newTotal = discountedSubtotal + prices.deliveryFee;
+                
+                document.getElementById('subtotal').textContent = `Kshs. ${discountedSubtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                document.getElementById('total').textContent = `Kshs. ${newTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                
+                // Update prices object with discounted values
+                prices = {
+                    subtotal: discountedSubtotal,
+                    deliveryFee: prices.deliveryFee,
+                    total: newTotal
+                };
+            }
+        
+            // Bargaining animation code remains the same
             let animationInterval;
             let currentValue = 0;
             let direction = 1;
@@ -544,21 +510,6 @@
                 }, 50);
             }
         
-            function applyDiscount(discountPercent) {
-                const subtotalEl = document.getElementById('subtotal');
-                const totalEl = document.getElementById('total');
-                const deliveryFeeEl = document.getElementById('delivery-fee');
-                
-                const subtotal = parseFloat(subtotalEl.textContent.replace('Kshs. ', '').replace(',', ''));
-                const deliveryFee = parseFloat(deliveryFeeEl.textContent.replace('Kshs. ', '').replace(',', ''));
-                
-                const discountedSubtotal = subtotal * (1 - discountPercent);
-                const newTotal = discountedSubtotal + deliveryFee;
-                
-                subtotalEl.textContent = `Kshs. ${discountedSubtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                totalEl.textContent = `Kshs. ${newTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            }
-        
             // Form validation and checkout handling
             function validateForm() {
                 const deliveryMethod = document.querySelector('input[name="delivery"]:checked');
@@ -598,10 +549,13 @@
                     // Simulate API call
                     setTimeout(() => {
                         alert('Order placed successfully!');
+                        // Clear cart after successful order
+                        localStorage.removeItem('cart');
                         // Reset form
                         checkoutBtn.disabled = false;
                         checkoutBtn.innerHTML = 'Complete Order <i class="fas fa-arrow-right"></i>';
                         // You would typically redirect to a confirmation page here
+                        window.location.href='index.html';
                     }, 2000);
                 }
             });
