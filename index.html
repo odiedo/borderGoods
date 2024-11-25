@@ -25,6 +25,96 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
+    <style>
+
+        .flash-sale-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .flash-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flash-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ff4400;
+            font-weight: bold;
+        }
+
+        .flash-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #ff4400;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .time-block {
+            background-color: #333;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            background: white;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            color: #ff4400;
+            font-weight: bold;
+        }
+
+        .view-more {
+            margin-left: auto;
+            color: #666;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -371,6 +461,39 @@
     </div> -->
     <!-- Subscribe End -->
 
+    <div class="flash-sale-container">
+        <div class="flash-header">
+            <div class="flash-title">
+                <div class="flash-icon">⚡</div>
+                Flash Sale
+            </div>
+            <div class="countdown">
+                Starting in
+                <span class="time-block" id="minutes">01</span> :
+                <span class="time-block" id="seconds">00</span>
+            </div>
+            <a href="#" class="view-more">View more</a>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="img/product-1.jpg" alt="Product" class="product-image">
+                <h3 class="product-title">Fashion Sandals</h3>
+                <div class="product-price">KSh 399</div>
+            </div>
+            <div class="product-card">
+                <img src="img/product-2.jpg" alt="Product" class="product-image">
+                <h3 class="product-title">Leather Wallet</h3>
+                <div class="product-price">KSh 999</div>
+            </div>
+            <div class="product-card">
+                <img src="img/product-3.jpg" alt="Product" class="product-image">
+                <h3 class="product-title">Wrist Watch</h3>
+                <div class="product-price">KSh 1,999</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Products Start -->
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
@@ -574,7 +697,28 @@
             });
         });
     </script>
+    <script>
+        function startCountdown() {
+            let totalSeconds = 60; // 1 minute
 
+            const intervalId = setInterval(() => {
+                totalSeconds--;
+                
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                
+                if (totalSeconds <= 0) {
+                    clearInterval(intervalId);
+                }
+            }, 1000);
+        }
+
+        // Start the countdown when the page loads
+        window.onload = startCountdown;
+    </script>
 </body>
 
 </html>
